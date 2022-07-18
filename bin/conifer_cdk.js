@@ -12,12 +12,14 @@ new ConiferCdkStack(app, 'ConiferCdkStack', {
   /* Uncomment the next line to specialize this stack for the AWS Account
    * and Region that are implied by the current CLI configuration. */
   // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
-  env: { 
+  env: {
+    ec2InstanceType: 't2.micro',
+    appImage: 'ahmadjiha/cypress-realworld-app',
     tests: [ 
-      "cypress/tests/api/*.spec.{js,jsx,ts,tsx}",
-      "cypress/tests/demo/*.spec.{js,jsx,ts,tsx}",
-      "cypress/tests/ui/*.spec.{js,jsx,ts,tsx}",
-      "cypress/tests/ui-auth-providers/*.spec.{js,jsx,ts,tsx}" 
+      'cypress/tests/api/*.spec.{js,jsx,ts,tsx}',
+      'cypress/tests/demo/*.spec.{js,jsx,ts,tsx}',
+      'cypress/tests/ui/*.spec.{js,jsx,ts,tsx}',
+      'cypress/tests/ui-auth-providers/*.spec.{js,jsx,ts,tsx}' 
     ] 
   }
 
