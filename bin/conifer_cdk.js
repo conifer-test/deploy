@@ -4,7 +4,7 @@ const cdk = require('aws-cdk-lib');
 const { ConiferCdkStack } = require('../lib/conifer_cdk-stack');
 
 const app = new cdk.App();
-new ConiferCdkStack(app, 'ConiferCdkStack', {
+new ConiferCdkStack(app, 'ConiferCdkStack1', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
@@ -13,6 +13,8 @@ new ConiferCdkStack(app, 'ConiferCdkStack', {
    * and Region that are implied by the current CLI configuration. */
   // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
   env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
     ec2InstanceType: 't2.micro',
     appImage: 'ahmadjiha/cypress-realworld-app',
     tests: [ 
@@ -20,7 +22,8 @@ new ConiferCdkStack(app, 'ConiferCdkStack', {
       'cypress/tests/demo/*.spec.{js,jsx,ts,tsx}',
       'cypress/tests/ui/*.spec.{js,jsx,ts,tsx}',
       'cypress/tests/ui-auth-providers/*.spec.{js,jsx,ts,tsx}' 
-    ] 
+    ],
+    taskMemoryLimit: 7000
   }
 
   /* Uncomment the next line if you know exactly what Account and Region you
