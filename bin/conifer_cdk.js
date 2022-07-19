@@ -2,6 +2,17 @@
 
 const cdk = require('aws-cdk-lib');
 const { ConiferCdkStack } = require('../lib/conifer_cdk-stack');
+const fs = require('fs');
+const path = require('path');
+
+const config = JSON.parse(fs.readFileSync('../conifer-config.json'));
+const makeGlob = (files) => {
+  const fileNames = files.map((filePath) => {
+    return path.parse(filePath).name;
+  });
+  const filesNamesString = fileNames.join(',');
+  return `cypress/**/{${filesNamesString}}.{cy,spec}.{js,jsx,ts,tsx}`;
+};
 
 const app = new cdk.App();
 new ConiferCdkStack(app, 'ConiferCdkStack1', {
@@ -15,16 +26,17 @@ new ConiferCdkStack(app, 'ConiferCdkStack1', {
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_DEFAULT_REGION,
-    ec2InstanceType: 't2.micro',
-    appImage: 'ahmadjiha/cypress-realworld-app',
-    tests: [ 
-      'cypress/tests/api/*.spec.{js,jsx,ts,tsx}',
-      'cypress/tests/demo/*.spec.{js,jsx,ts,tsx}',
-      'cypress/tests/ui/*.spec.{js,jsx,ts,tsx}',
-      'cypress/tests/ui-auth-providers/*.spec.{js,jsx,ts,tsx}' 
-    ],
-    taskMemoryLimit: 7000
-  }
+    ec2InstanceType: config.ec2InstanceType,
+    appImage: 'ahmadjiha/cypress-realworld-app', // TODO: Add image
+    // tests: [
+    //   'cypress/tests/api/*.spec.{js,jsx,ts,tsx}',
+    //   'cypress/tests/demo/*.spec.{js,jsx,ts,tsx}',
+    //   'cypress/tests/ui/*.spec.{js,jsx,ts,tsx}',
+    //   'cypress/tests/ui-auth-providers/*.spec.{js,jsx,ts,tsx}',
+    // ],
+    tests: config.testGroupings.map((testGrouping) => makeGlob(testGrouping)),
+    taskMemoryLimit: 7000,
+  },
 
   /* Uncomment the next line if you know exactly what Account and Region you
    * want to deploy the stack to. */
