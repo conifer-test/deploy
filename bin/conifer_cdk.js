@@ -8,14 +8,14 @@ const path = require('path');
 const config = JSON.parse(fs.readFileSync('../conifer-config.json'));
 const makeGlob = (files) => {
   const fileNames = files.map((filePath) => {
-    return path.parse(filePath).name;
+    return path.parse(path.parse(filePath).name).name;
   });
   const filesNamesString = fileNames.join(',');
   return `cypress/**/{${filesNamesString}}.{cy,spec}.{js,jsx,ts,tsx}`;
 };
 
 const app = new cdk.App();
-new ConiferCdkStack(app, 'ConiferCdkStack1', {
+new ConiferCdkStack(app, 'ConiferCdkStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
@@ -27,7 +27,7 @@ new ConiferCdkStack(app, 'ConiferCdkStack1', {
     account: process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_DEFAULT_REGION,
     ec2InstanceType: config.ec2InstanceType,
-    appImage: 'ahmadjiha/cypress-realworld-app', // TODO: Add image
+    appImage: 'ahmadjiha/cypress-realworld-test', // TODO: Add image
     tests: config.testGroupings.map((testGrouping) => makeGlob(testGrouping)),
     taskMemoryLimit: 7000,
   },
