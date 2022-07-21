@@ -27,7 +27,7 @@ new ConiferCdkStack(app, 'ConiferCdkStack', {
     account: process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_DEFAULT_REGION,
     ec2InstanceType: config.ec2InstanceType,
-    appImage: 'ahmadjiha/cypress-realworld-test', // TODO: Add image
+    appImage: config.imageUri, // TODO: Add image
     tests: config.testGroupings.map((testGrouping) => makeGlob(testGrouping)),
     taskMemoryLimit: 7000,
   },
