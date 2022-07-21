@@ -30,6 +30,7 @@ new ConiferCdkStack(app, 'ConiferCdkStack', {
     appImage: config.imageUri, // TODO: Add image
     tests: config.testGroupings.map((testGrouping) => makeGlob(testGrouping)),
     taskMemoryLimit: 7000,
+    bucketName: config.bucketName
   },
 
   /* Uncomment the next line if you know exactly what Account and Region you
